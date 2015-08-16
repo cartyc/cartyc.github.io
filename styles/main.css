@@ -1,0 +1,40 @@
+body{
+  /*background-color: #607D8B;*/
+  background:
+  linear-gradient(
+  rgba(0, 0, 0, 0.5),
+  rgba(0, 0, 0, 0.5)),
+  url("../img/baseball.jpg");
+  background-size: cover;
+  font-family: Roboto;
+}
+
+.content{
+  color: #fff;
+  text-align: center;
+  font-size: 24px;
+  margin: 15%;
+}
+
+.whatido{
+  margin: 20px;
+}
+
+.demo-card-wide.mdl-card{
+  width: 512px;
+  margin: auto;
+}
+
+.mdl-card__title{
+  background-color: #304FFE;
+}
+
+.demo-card-wide > .mdl-card__title{
+  color: #fff;
+  height: 176px;
+}
+
+
+.demo-card-wide > .mdl-card__menu{
+  color: #fff;
+}
