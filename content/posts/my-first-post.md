@@ -1,5 +1,10 @@
-# Work In Progress
-** Not intended for production env's
+---
+title: "Fun with Config Controller and GitOps"
+date: 2022-02-27
+draft: true
+summary: For some fun I decided to put together a little example tutorial on some of the things I've been playing around with, namely Kubernetes Config Connector and Config Controller.
+---
+
 
 ## Fun with Config Controller and GitOps
 

@@ -1,4 +1,16 @@
 baseURL = 'https://cartyc.github.io'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
-theme = "ananke"
+title = "Chris' Blog"
+theme = "noteworthy"
+paginate = 4 # Set the number of posts to show before overflowing to the next page.
+summaryLength = 10
+
+[author]
+    name = "chris"
+
+[params]
+    github = "https://github.com/cartyc/"
+    twitter = "https://twitter.com/macintoshprime"
+    linkedin = "https://www.linkedin.com/in/chriscarty/"
+    showReadMore = true
+    # description = "Noteworthy is a minimalist Hugo theme, perfect for writers and bloggers."
