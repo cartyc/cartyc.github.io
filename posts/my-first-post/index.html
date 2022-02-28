@@ -1,155 +1,229 @@
-<!doctype html><html lang=en-us>
-<head>
-<meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=format-detection content="telephone=no">
-<title>Fun with Config Controller and GitOps | Chris' Blog</title>
-<link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png>
-<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png>
-<link rel=manifest href=/manifest.json>
-<link rel=mask-icon href=/safari-pinned-tab.svg color=#ff3db4>
-<meta name=theme-color content="#ffffff">
-<link rel=stylesheet href=https://cartyc.github.io/css/main.min.e34415025514319010e741089e6920454053855755ba465f66943ad102d2cb08.css>
-</head>
-<body>
-<nav>
-<header>
-<div class=site-title>
-<a href=/>Chris' Blog</a>
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>My New Hugo Site</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Work In Progress ** Not intended for production env&rsquo;s
+Fun with Config Controller and GitOps For some fun I decided to put together a little example tutorial on some of the things I&rsquo;ve been playing around with, namely Kubernetes Config Connector and Config Controller. Config Connector is a service that lets you define GCP resources as YAML so you can deploy GCP resources from a Kubernetes Cluster. This can be installed in either GKE or other Kubernetes Distributions.">
+    <meta name="generator" content="Hugo 0.92.2" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="" />
+<meta property="og:description" content="Work In Progress ** Not intended for production env&rsquo;s
+Fun with Config Controller and GitOps For some fun I decided to put together a little example tutorial on some of the things I&rsquo;ve been playing around with, namely Kubernetes Config Connector and Config Controller. Config Connector is a service that lets you define GCP resources as YAML so you can deploy GCP resources from a Kubernetes Cluster. This can be installed in either GKE or other Kubernetes Distributions." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cartyc.github.io/posts/my-first-post/" /><meta property="article:section" content="posts" />
+
+
+
+<meta itemprop="name" content="">
+<meta itemprop="description" content="Work In Progress ** Not intended for production env&rsquo;s
+Fun with Config Controller and GitOps For some fun I decided to put together a little example tutorial on some of the things I&rsquo;ve been playing around with, namely Kubernetes Config Connector and Config Controller. Config Connector is a service that lets you define GCP resources as YAML so you can deploy GCP resources from a Kubernetes Cluster. This can be installed in either GKE or other Kubernetes Distributions.">
+
+<meta itemprop="wordCount" content="1461">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="Work In Progress ** Not intended for production env&rsquo;s
+Fun with Config Controller and GitOps For some fun I decided to put together a little example tutorial on some of the things I&rsquo;ve been playing around with, namely Kubernetes Config Connector and Config Controller. Config Connector is a service that lets you define GCP resources as YAML so you can deploy GCP resources from a Kubernetes Cluster. This can be installed in either GKE or other Kubernetes Distributions."/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        My New Hugo Site
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+<div class="ananke-socials">
+  
 </div>
-</header>
-<div class=nav-menu>
-<a class="color-link nav-link" href=https://cartyc.github.io/index.xml target=_blank rel=noopener type=application/rss+xml>RSS</a>
-</div>
-<footer class=footer>
-<div class=social-icons>
-<a class=social-icon href=https://twitter.com/macintoshprime target=_blank rel=noopener title=Twitter><svg width="28" height="28" viewBox="0 0 28 28" fill="#ababab" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><path d="M8.991284 24.971612c10.189152.0 15.761088-8.441388 15.761088-15.761088C24.752372 8.970656 24.747512 8.731868 24.736496 8.494376 25.818008 7.712564 26.758256 6.737 27.5 5.62622c-.992628.440856-2.060748.738072-3.181248.871992 1.14372-.685584 2.02176-1.770768 2.435832-3.064176-1.070496.6345-2.25558 1.095984-3.517344 1.344492-1.010772-1.076652-2.450412-1.75014-4.043412-1.75014-3.059424.0-5.540292 2.480868-5.540292 5.539104.0.434808.0487079999999995.857412.14364 1.26306C9.19346 9.599108 5.11106 7.39472 2.3792 4.04294c-.476172.818424-.750168 1.769688-.750168 2.784132.0 1.921968.97794 3.61854 2.464992 4.61106C3.185528 11.41016 2.331788 11.160464 1.585184 10.745096 1.583888 10.768208 1.583888 10.791428 1.583888 10.815728c0 2.683152 1.909764 4.922856 4.4442 5.43078C5.562932 16.373084 5.07326 16.44134 4.56782 16.44134 4.210988 16.44134 3.863876 16.406024 3.526484 16.34144c.70524 2.200824 2.750112 3.802356 5.174928 3.8475-1.896264 1.485756-4.284576 2.37114-6.879924 2.37114C1.374476 22.56008.93362 22.534592.5 22.4834c2.451708 1.571076 5.362524 2.488212 8.491284 2.488212"/></svg>
-</a>
-<a class=social-icon href=https://www.linkedin.com/in/chriscarty/ target=_blank rel=noopener title=LinkedIn><svg width="28" height="28" viewBox="0 0 28 28" fill="#ababab" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><path d="M2 3.654102c0-.95502059.79442509-1.73012354 1.77383592-1.73012354H24.2261641C25.2058917 1.92397846 26 2.69908141 26 3.654102V24.3462148C26 25.3015521 25.2058917 26.0760215 24.2261641 26.0760215H3.77383592C2.79442509 26.0760215 2 25.3015521 2 24.3465315V3.65378524 3.654102zM9.27526132 22.1415901V11.2356668H5.65030092V22.1415901H9.27557808 9.27526132zM7.46341463 9.74691162c1.2638581.0 2.05068103-.83750395 2.05068103-1.88406715C9.49033893 6.79252455 8.72727273 5.97846056 7.48748812 5.97846056c-1.24073487.0-2.05099778.81406399-2.05099778 1.88438391.0 1.0465632.78650618 1.88406715 2.00316756 1.88406715h.02343998H7.46341463zM11.2815965 22.1415901h3.6246436v-6.089642C14.9062401 15.7263225 14.9299968 15.4000634 15.0256573 15.1675641c.261957499999999-.6515679.8584099-1.3259423 1.8599936-1.3259423 1.3113716.0 1.836237 1 1.836237 2.4662654v5.8337029h3.6246436V15.8885017c0-3.349699-1.7880899-4.9084574-4.172949-4.9084574-1.9553373.0-2.814064 1.0928097-3.2910991 1.8371872H14.9065569v-1.581248H11.2819132C11.3291099 12.2591067 11.2815965 22.1419069 11.2815965 22.1419069V22.1415901z"/></svg>
-</a>
-<a class=social-icon href=https://github.com/cartyc/ target=_blank rel=noopener title=GitHub><svg width="28" height="28" viewBox="0 0 28 28" fill="#ababab" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><path d="M13.9988029 1.32087331C6.82105037 1.32087331 1 7.14112562 1 14.3212723c0 5.7436386 3.72454649 10.6157955 8.89038951 12.3348169C10.5408085 26.7757983 10.7778323 26.374374 10.7778323 26.0296121 10.7778323 25.7215609 10.7666595 24.9035493 10.760275 23.8189856 7.14426471 24.6042767 6.38131925 22.0760223 6.38131925 22.0760223c-.59136253-1.5019491-1.44369072-1.9017772-1.44369072-1.9017772C3.75729765 19.3682044 5.02701126 19.3841656 5.02701126 19.3841656 6.33183953 19.4759425 7.01817121 20.7241085 7.01817121 20.7241085c1.15958133 1.9863716 3.04300319 1.4125664 3.78360289 1.0797753.1181129-.8395592.4540962-1.4125663.8251942-1.7373768C8.74038491 19.7385043 5.70536235 18.6228163 5.70536235 13.6413251c0-1.4189508.50676816-2.5801283 1.33834679-3.4883207C6.90963504 9.82420367 6.46351945 8.50181809 7.17139875 6.71256734c0 0 1.09094816-.34955032 3.57451115 1.33276037C11.78259 7.75642995 12.8950858 7.61277914 14.000399 7.60719272 15.1049142 7.61277914 16.2166119 7.75642995 17.2548881 8.04532771c2.4819669-1.68231069 3.571319-1.33276037 3.571319-1.33276037C21.5356825 8.50181809 21.0895669 9.82420367 20.9562909 10.1530044 21.7894656 11.0611968 22.2922435 12.2223743 22.2922435 13.6413251c0 4.9942601-3.039811 6.0931889-5.935173 6.4148071.4660671.401424200000001.8818564 1.194696.8818564 2.4077473C17.2389269 24.2012564 17.2229657 25.603448 17.2229657 26.0296121 17.2229657 26.3775663 17.4575954 26.7821827 18.116793 26.6552912 23.2786458 24.9322794 27 20.0633148 27 14.3212723 27 7.14112562 21.1789496 1.32087331 13.9988029 1.32087331"/></svg>
-</a>
-</div>
-<p><a href=https://github.com/kimcc/hugo-theme-noteworthy target=_blank rel=noopener>Noteworthy theme</a></p>
-<p><a href=https://gohugo.io target=_blank rel=noopener>Built with Hugo</a></p>
-<script src=https://cartyc.github.io/js/main.min.c1aee25a817e9beb1f9c4afd9d62311227a7f5e46720e404dc1dda97281f47f2.js integrity="sha256-wa7iWoF+m+sfnEr9nWIxEien9eRnIOQE3B3alygfR/I=" crossorigin=anonymous></script>
-</footer>
+    </div>
+  </div>
 </nav>
-<div id=content class=content-container>
-<h1 class=post-title>Fun with Config Controller and GitOps</h1>
-<time>February 27, 2022</time>
-<div>
-<p>
-<h2 id=fun-with-config-controller-and-gitops>Fun with Config Controller and GitOps</h2>
-<p>For some fun I decided to put together a little example tutorial on some of the things I&rsquo;ve been playing around with, namely Kubernetes <a href=https://cloud.google.com/config-connector/docs/overview>Config Connector</a> and <a href=https://cloud.google.com/anthos-config-management/docs/concepts/config-controller-overview>Config Controller</a>. Config Connector is a service that lets you define GCP resources as YAML so you can deploy GCP resources from a Kubernetes Cluster. This can be installed in either GKE or other <a href=https://cloud.google.com/config-connector/docs/how-to/install-other-kubernetes>Kubernetes Distributions</a>. This lets you start managing Google Cloud services like you would other Kubernetes resources which is something I&rsquo;ve really been enjoying. You can see the full list of supported resources <a href=https://cloud.google.com/config-connector/docs/reference/overview>here</a></p>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1"></h1>
+      
+      
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h1 id="work-in-progress">Work In Progress</h1>
+<p>** Not intended for production env&rsquo;s</p>
+<h2 id="fun-with-config-controller-and-gitops">Fun with Config Controller and GitOps</h2>
+<p>For some fun I decided to put together a little example tutorial on some of the things I&rsquo;ve been playing around with, namely Kubernetes <a href="https://cloud.google.com/config-connector/docs/overview">Config Connector</a> and <a href="https://cloud.google.com/anthos-config-management/docs/concepts/config-controller-overview">Config Controller</a>. Config Connector is a service that lets you define GCP resources as YAML so you can deploy GCP resources from a Kubernetes Cluster. This can be installed in either GKE or other <a href="https://cloud.google.com/config-connector/docs/how-to/install-other-kubernetes">Kubernetes Distributions</a>. This lets you start managing Google Cloud services like you would other Kubernetes resources which is something I&rsquo;ve really been enjoying. You can see the full list of supported resources <a href="https://cloud.google.com/config-connector/docs/reference/overview">here</a></p>
 <p>Initially the probably I have had with this mean is the default requirement of needing a Kubernetes cluster to act as a management cluster, which you would need to manage and support. I&rsquo;ve found this extends to other services the use the Kubernetes Resource Model to manage infrastucture. It&rsquo;s not the end of the world but it&rsquo;s something that can add some overhead and complexity. This is why I&rsquo;m rather excited about Config Controller which is a new service in Google Cloud which pre-loads a GKE cluster with Config Connector and is managed by Google instead of by me or you! To me this is a great way of solving that chicken and egg situation of needing a cluster to get started.</p>
-<p>The main thing I wanted to test was to see if I could bootstrap a Kubernetes Cluster and wire it up with a GitOps agent to sync with a repository without having to use <code>kubectl</code> on it and deploy some applications. The apps I want to deploy for this demo are Falco and Falco Sidekick for a few reasons. First off Falco is a pretty fantastic tool in your Kubernetes Security toolkit (used by folks like Shopify and Gitlab) for doing runtime security and second is Falco Sidekick which is a companion tool for sending Falco alerts to other services in your ecosystem like Pub/Sub! The main reason I wanted to use Falco and Falco Sidekick in action is getting the PubSub integration using <a href=https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity>WorkloadIdenity</a> for authentication. The nice part to doing this is you won&rsquo;t need to generate a Service Account key and insert that into the Falco Sidekick pod rather but instead using GCP&rsquo;s IAM give the Falco Sidekick K8s SA access to GCP IAM roles.</p>
-<p>In order to setup GitOps on the newly generated cluster we will be using the GKE Hub KCC resources (<a href=https://cloud.google.com/config-connector/docs/reference/resource-docs/gkehub/gkehubfeature>GKEHubFeature</a>, <a href=https://cloud.google.com/config-connector/docs/reference/resource-docs/gkehub/gkehubfeaturemembership>GKEHubFeatureMembership</a>, and <a href=https://cloud.google.com/config-connector/docs/reference/resource-docs/gkehub/gkehubmembership>GKEHubMembership</a>) to configure Config Management. This will sync with the Source Repo that gets created from Config Controller and once you push the demo code to it.</p>
-<p>Finally to help with the distibution of the configs I&rsquo;ve been kicking the tires on the <a href=kpt.dev>kpt</a> tool.</p>
+<p>The main thing I wanted to test was to see if I could bootstrap a Kubernetes Cluster and wire it up with a GitOps agent to sync with a repository without having to use <code>kubectl</code> on it and deploy some applications. The apps I want to deploy for this demo are Falco and Falco Sidekick for a few reasons. First off Falco is a pretty fantastic tool in your Kubernetes Security toolkit (used by folks like Shopify and Gitlab) for doing runtime security and second is Falco Sidekick which is a companion tool for sending Falco alerts to other services in your ecosystem like Pub/Sub! The main reason I wanted to use Falco and Falco Sidekick in action is getting the PubSub integration using <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity">WorkloadIdenity</a> for authentication. The nice part to doing this is you won&rsquo;t need to generate a Service Account key and insert that into the Falco Sidekick pod rather but instead using GCP&rsquo;s IAM give the Falco Sidekick K8s SA access to GCP IAM roles.</p>
+<p>In order to setup GitOps on the newly generated cluster we will be using the GKE Hub KCC resources (<a href="https://cloud.google.com/config-connector/docs/reference/resource-docs/gkehub/gkehubfeature">GKEHubFeature</a>, <a href="https://cloud.google.com/config-connector/docs/reference/resource-docs/gkehub/gkehubfeaturemembership">GKEHubFeatureMembership</a>, and <a href="https://cloud.google.com/config-connector/docs/reference/resource-docs/gkehub/gkehubmembership">GKEHubMembership</a>) to configure Config Management. This will sync with the Source Repo that gets created from Config Controller and once you push the demo code to it.</p>
+<p>Finally to help with the distibution of the configs I&rsquo;ve been kicking the tires on the <a href="kpt.dev">kpt</a> tool.</p>
 <p>So if everything goes according to plan you will create a Config Controller instance to deploy a Private GKE cluster which will deploy Falco and Falco Sidekick using Config Management, PubSub (topic and subscription), IAM Roles, Service Accounts and a Source Repo instance to your Google Cloud project.</p>
-<h2 id=deploying-the-infrastructure>Deploying The Infrastructure</h2>
-<h3 id=config-controller>Config Controller</h3>
-<p>Without further ado let&rsquo;s create a Config Controller instance in your GCP project to get started. This should take about 20 minutes or so. This is currently only available in us-central1 and us-east1 regions. I&rsquo;ll be using east1 because that&rsquo;s closest to where I am. Full instructions can be found <a href=https://cloud.google.com/anthos-config-management/docs/how-to/config-controller-setup>here</a></p>
+<h2 id="deploying-the-infrastructure">Deploying The Infrastructure</h2>
+<h3 id="config-controller">Config Controller</h3>
+<p>Without further ado let&rsquo;s create a Config Controller instance in your GCP project to get started. This should take about 20 minutes or so. This is currently only available in us-central1 and us-east1 regions. I&rsquo;ll be using east1 because that&rsquo;s closest to where I am. Full instructions can be found <a href="https://cloud.google.com/anthos-config-management/docs/how-to/config-controller-setup">here</a></p>
 <p>Setup your environment</p>
-<pre tabindex=0><code>export PROJECT_ID=&lt;your_project_id&gt;
+<pre tabindex="0"><code>export PROJECT_ID=&lt;your_project_id&gt;
 gcloud config set project $PROJECT_ID
 </code></pre><p>Create a default network if it doesn&rsquo;t exist already</p>
-<pre tabindex=0><code>gcloud compute networks create default --subnet-mode=auto
+<pre tabindex="0"><code>gcloud compute networks create default --subnet-mode=auto
 </code></pre><p>Enable the required APIs</p>
-<pre tabindex=0><code>gcloud services enable krmapihosting.googleapis.com \
+<pre tabindex="0"><code>gcloud services enable krmapihosting.googleapis.com \
     container.googleapis.com \
     cloudresourcemanager.googleapis.com
 </code></pre><p>Create the Config Controller instance</p>
-<pre tabindex=0><code>gcloud anthos config controller create main --location us-east1
+<pre tabindex="0"><code>gcloud anthos config controller create main --location us-east1
 </code></pre><p>Once this is compelete you can get access to the newly created Config Controller cluster by running <code>gcloud config controller get-credentials main --location us-east1</code>. Once in the cluster we can start using out <code>kubectl</code> commands. Before we do that we&rsquo;ll want to give Config Controller permissions to start creating resources in the project.</p>
-<pre tabindex=0><code>gcloud iam service-accounts create connector
+<pre tabindex="0"><code>gcloud iam service-accounts create connector
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member=&quot;serviceAccount:connector@${PROJECT_ID}.iam.gserviceaccount.com&quot; \
-    --role=&quot;roles/container.clusterAdmin&quot;
-gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-    --member=&quot;serviceAccount:connector@${PROJECT_ID}.iam.gserviceaccount.com&quot; \
-    --role=&quot;roles/pubsub.admin&quot;
-gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-    --member=&quot;serviceAccount:connector@${PROJECT_ID}.iam.gserviceaccount.com&quot; \
-    --role=&quot;roles/source.admin&quot;
-gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-    --member=&quot;serviceAccount:connector@${PROJECT_ID}.iam.gserviceaccount.com&quot; \
-    --role=&quot;roles/iam.securityAdmin&quot;
-gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-    --member=&quot;serviceAccount:connector@${PROJECT_ID}.iam.gserviceaccount.com&quot; \
-    --role=&quot;roles/gkehub.admin&quot;
+    --role=&quot;roles/owner&quot;
 gcloud iam service-accounts add-iam-policy-binding \
 connector@${PROJECT_ID}.iam.gserviceaccount.com \
     --member=&quot;serviceAccount:${PROJECT_ID}.svc.id.goog[cnrm-system/cnrm-controller-manager]&quot; \
     --role=&quot;roles/iam.workloadIdentityUser&quot;
-</code></pre><h3 id=config-connector-deployments>Config Connector Deployments</h3>
+</code></pre><h3 id="config-connector-deployments">Config Connector Deployments</h3>
 <p>With these permissions the Controller will be able to spin up the necessary GCP resources for the demo. Assuming you ran the prior <code>gcloud anthos ..</code> we can move on to the next step of getting our configs ready. These permissions are admitedly wider in scope than they should be in production environments.</p>
-<p>In order to get the configs we&rsquo;ll be using <code>kpt</code> which come pre-installed in Cloud Shell but if you are running it locally the installation guide can be found <a href=https://kpt.dev/installation/>here</a>. To get the confings run the following command which will pull the configs into a new directory in you current path</p>
-<pre tabindex=0><code>kpt pkg get https://github.com/cartyc/config-controller-example.git/configs
+<p>In order to get the configs we&rsquo;ll be using <code>kpt</code> which come pre-installed in Cloud Shell but if you are running it locally the installation guide can be found <a href="https://kpt.dev/installation/">here</a>.  To get the confings run the following command which will pull the configs into a new directory in you current path</p>
+<pre tabindex="0"><code>kpt pkg get https://github.com/cartyc/config-controller-example.git/configs
 cd configs
 </code></pre><p>Next we&rsquo;ll want to update the setters file and insert your project id in the data section</p>
-<pre tabindex=0><code>data:
+<pre tabindex="0"><code>data:
   PROJECT_ID: YOUR_PROJECT_ID
 </code></pre><p>Once that is complete run <code>kpt fn render</code> to apply the setters file and then run the following commands to apply the configs.</p>
-<pre tabindex=0><code>kpt fn render
+<pre tabindex="0"><code>kpt fn render
 kpt live init
 kpt live apply # kpt will stay active until all resources are reconciled.
 cd .. # To make sure we're up a directory for the next step
 </code></pre><p>This will spin up a GKE cluster with Config Sync installed and targetting the <code>deploy</code> directory of the Source Repo that is being created along with a Pub/Sub instance Falco Sidekick will be sending the Falco Alerts too (the Falco Sidekick UI is also enabled).</p>
 <p>The services will take a while to spin up and you can keep an eye on them by running <code>kubectl get gcp --namespace config-control</code>. For now we&rsquo;re just concerned with whether or not the Source Repository is only so we can push our configs there. This will take a few minutes as the API gets enabled but you can check on it with <code>kubectl get sourcereporepository</code>. Once the service reads ready we can push the configs!</p>
-<h3 id=falco-and-falco-sidekick>Falco and Falco Sidekick</h3>
+<h3 id="falco-and-falco-sidekick">Falco and Falco Sidekick</h3>
 <p>While that is being created we can start setting up that repository. To get the configs for it we will pull another <code>kpt</code> package</p>
-<pre tabindex=0><code>kpt pkg get https://github.com/cartyc/config-controller-example.git/falco-sync
+<pre tabindex="0"><code>kpt pkg get https://github.com/cartyc/config-controller-example.git/falco-sync
 </code></pre><p>The configs here are already set up and the only change you&rsquo;ll need to do is update the <code>kustomization.yaml</code> to make sure the <code>falco-falcosidekick</code> serviceaccounts gets annotated with the information it needs to make sure workloadidentity works right.</p>
 <p>If you look at the pkg you will notice that we will be deploying Falco and Falco Sidekick via the Falco Helm Chart and using <code>kustomize</code> to do the rendering of the chart. This is a pretty nifty new feature that was implemented in Config Sync a few versions ago.</p>
 <p>We will be using a <code>kustomize</code> patch to annotate the service account that gets created as this does not get exposed in the helm chart.</p>
-<pre tabindex=0><code>patch: |-
+<pre tabindex="0"><code>patch: |-
     - op: add
     path: &quot;/metadata/annotations&quot;
     value:
         iam.gke.io/gcp-service-account: falco-sidekick@${PROJECT_ID}.iam.gserviceaccount.com &lt;-- replace ${PROJECT_ID} with the target projects ID
 </code></pre><p>To do this open the file in your favorite editor, I&rsquo;ll be using vim.</p>
-<pre tabindex=0><code>cd falco-sync
+<pre tabindex="0"><code>cd falco-sync
 vim deploy/kustomization.yaml
 </code></pre><p>Once you have done that hopefull the Source Repo is created, this takes a few minutes as it needs to enable the API first. If it is you can continue below or go get a refreshment and come back in a few minutes.</p>
-<pre tabindex=0><code>git init 
+<pre tabindex="0"><code>git init 
 git branch -m master main
 git add .
 git commit -m &quot;added demo code&quot;
 git remote add origin https://source.developers.google.com/p/${PROJECT_ID}/r/falco-sidekick
 git push origin --all
 </code></pre><p>After a few minutes everything should light up and you&rsquo;ll have Falco up and running with Falco Sidekick sending events to Pub/Sub using WorkloadIdentity for authentication!</p>
-<h2 id=wrap-up>Wrap-Up</h2>
-<p>The part about this process is that aside from the work we did in the config controller cluster we didn&rsquo;t have to touch Kubernetes directly and we used WorkloadIdentity to enable our services to access Source Repository and PubSub with needing to create keys or tokens and store them in Git or manually add them to the cluster. That is something I am very excited about! If you already have a repo in github or gitlab you can <a href=https://cloud.google.com/source-repositories/docs/mirroring-repositories>mirror</a> them into Source Repository and use that as git delivery mechanism.</p>
-<p>I would really like to revist this and explore the use of <a href=https://cloud.google.com/deploy>Cloud Deploy</a> to deliver the Infrastructure side of things and fully avoid any <code>kubectl</code> work and leave it up to automation. This can also be done using Config Connector as well which is pretty snazzy especially when you start paring Policy Controller to enforce policy on your infrastructure!</p>
-<p>For more Config Connector fun you should check out fellow googler&rsquo;s Mathieu Benoit&rsquo;s post on this <a href=https://alwaysupalwayson.com/posts/2022/02/config-controller-gitops/>here</a> and Richard Seroter&rsquo;s blog <a href=https://seroter.com/2021/08/18/using-the-new-google-cloud-config-controller-to-provision-and-manage-cloud-services-via-the-kubernetes-resource-model/>here</a>.</p>
-<h2 id=additional-resources>Additional Resources</h2>
+<h2 id="wrap-up">Wrap-Up</h2>
+<p>The part about this process is that aside from the work we did in the config controller cluster we didn&rsquo;t have to touch Kubernetes directly and we used WorkloadIdentity to enable our services to access Source Repository and PubSub with needing to create keys or tokens and store them in Git or manually add them to the cluster. That is something I am very excited about! If you already have a repo in github or gitlab you can <a href="https://cloud.google.com/source-repositories/docs/mirroring-repositories">mirror</a> them into Source Repository and use that as git delivery mechanism.</p>
+<p>I would really like to revist this and explore the use of <a href="https://cloud.google.com/deploy">Cloud Deploy</a> to deliver the Infrastructure side of things and fully avoid any <code>kubectl</code> work and leave it up to automation. This can also be done using Config Connector as well which is pretty snazzy especially when you start paring Policy Controller to enforce policy on your infrastructure!</p>
+<p>For more Config Connector fun you should check out fellow googler&rsquo;s Mathieu Benoit&rsquo;s post on this <a href="https://alwaysupalwayson.com/posts/2022/02/config-controller-gitops/">here</a> and Richard Seroter&rsquo;s blog <a href="https://seroter.com/2021/08/18/using-the-new-google-cloud-config-controller-to-provision-and-manage-cloud-services-via-the-kubernetes-resource-model/">here</a>.</p>
+<h2 id="additional-resources">Additional Resources</h2>
 <ul>
-<li><a href=https://kpt.dev/guides/rationale>The Rational Behind kpt</a></li>
-<li><a href=https://cloud.google.com/anthos-config-management/docs/tutorials/landing-zone>Blueprints</a></li>
+<li><a href="https://kpt.dev/guides/rationale">The Rational Behind kpt</a></li>
+<li><a href="https://cloud.google.com/anthos-config-management/docs/tutorials/landing-zone">Blueprints</a></li>
 </ul>
-</p>
-</div>
-<div class=page-footer>
-</div>
-</div>
-<footer class=footer-mobile>
-<div class=social-icons>
-<a class=social-icon href=https://twitter.com/macintoshprime target=_blank rel=noopener title=Twitter><svg width="28" height="28" viewBox="0 0 28 28" fill="#ababab" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><path d="M8.991284 24.971612c10.189152.0 15.761088-8.441388 15.761088-15.761088C24.752372 8.970656 24.747512 8.731868 24.736496 8.494376 25.818008 7.712564 26.758256 6.737 27.5 5.62622c-.992628.440856-2.060748.738072-3.181248.871992 1.14372-.685584 2.02176-1.770768 2.435832-3.064176-1.070496.6345-2.25558 1.095984-3.517344 1.344492-1.010772-1.076652-2.450412-1.75014-4.043412-1.75014-3.059424.0-5.540292 2.480868-5.540292 5.539104.0.434808.0487079999999995.857412.14364 1.26306C9.19346 9.599108 5.11106 7.39472 2.3792 4.04294c-.476172.818424-.750168 1.769688-.750168 2.784132.0 1.921968.97794 3.61854 2.464992 4.61106C3.185528 11.41016 2.331788 11.160464 1.585184 10.745096 1.583888 10.768208 1.583888 10.791428 1.583888 10.815728c0 2.683152 1.909764 4.922856 4.4442 5.43078C5.562932 16.373084 5.07326 16.44134 4.56782 16.44134 4.210988 16.44134 3.863876 16.406024 3.526484 16.34144c.70524 2.200824 2.750112 3.802356 5.174928 3.8475-1.896264 1.485756-4.284576 2.37114-6.879924 2.37114C1.374476 22.56008.93362 22.534592.5 22.4834c2.451708 1.571076 5.362524 2.488212 8.491284 2.488212"/></svg>
-</a>
-<a class=social-icon href=https://www.linkedin.com/in/chriscarty/ target=_blank rel=noopener title=LinkedIn><svg width="28" height="28" viewBox="0 0 28 28" fill="#ababab" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><path d="M2 3.654102c0-.95502059.79442509-1.73012354 1.77383592-1.73012354H24.2261641C25.2058917 1.92397846 26 2.69908141 26 3.654102V24.3462148C26 25.3015521 25.2058917 26.0760215 24.2261641 26.0760215H3.77383592C2.79442509 26.0760215 2 25.3015521 2 24.3465315V3.65378524 3.654102zM9.27526132 22.1415901V11.2356668H5.65030092V22.1415901H9.27557808 9.27526132zM7.46341463 9.74691162c1.2638581.0 2.05068103-.83750395 2.05068103-1.88406715C9.49033893 6.79252455 8.72727273 5.97846056 7.48748812 5.97846056c-1.24073487.0-2.05099778.81406399-2.05099778 1.88438391.0 1.0465632.78650618 1.88406715 2.00316756 1.88406715h.02343998H7.46341463zM11.2815965 22.1415901h3.6246436v-6.089642C14.9062401 15.7263225 14.9299968 15.4000634 15.0256573 15.1675641c.261957499999999-.6515679.8584099-1.3259423 1.8599936-1.3259423 1.3113716.0 1.836237 1 1.836237 2.4662654v5.8337029h3.6246436V15.8885017c0-3.349699-1.7880899-4.9084574-4.172949-4.9084574-1.9553373.0-2.814064 1.0928097-3.2910991 1.8371872H14.9065569v-1.581248H11.2819132C11.3291099 12.2591067 11.2815965 22.1419069 11.2815965 22.1419069V22.1415901z"/></svg>
-</a>
-<a class=social-icon href=https://github.com/cartyc/ target=_blank rel=noopener title=GitHub><svg width="28" height="28" viewBox="0 0 28 28" fill="#ababab" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><path d="M13.9988029 1.32087331C6.82105037 1.32087331 1 7.14112562 1 14.3212723c0 5.7436386 3.72454649 10.6157955 8.89038951 12.3348169C10.5408085 26.7757983 10.7778323 26.374374 10.7778323 26.0296121 10.7778323 25.7215609 10.7666595 24.9035493 10.760275 23.8189856 7.14426471 24.6042767 6.38131925 22.0760223 6.38131925 22.0760223c-.59136253-1.5019491-1.44369072-1.9017772-1.44369072-1.9017772C3.75729765 19.3682044 5.02701126 19.3841656 5.02701126 19.3841656 6.33183953 19.4759425 7.01817121 20.7241085 7.01817121 20.7241085c1.15958133 1.9863716 3.04300319 1.4125664 3.78360289 1.0797753.1181129-.8395592.4540962-1.4125663.8251942-1.7373768C8.74038491 19.7385043 5.70536235 18.6228163 5.70536235 13.6413251c0-1.4189508.50676816-2.5801283 1.33834679-3.4883207C6.90963504 9.82420367 6.46351945 8.50181809 7.17139875 6.71256734c0 0 1.09094816-.34955032 3.57451115 1.33276037C11.78259 7.75642995 12.8950858 7.61277914 14.000399 7.60719272 15.1049142 7.61277914 16.2166119 7.75642995 17.2548881 8.04532771c2.4819669-1.68231069 3.571319-1.33276037 3.571319-1.33276037C21.5356825 8.50181809 21.0895669 9.82420367 20.9562909 10.1530044 21.7894656 11.0611968 22.2922435 12.2223743 22.2922435 13.6413251c0 4.9942601-3.039811 6.0931889-5.935173 6.4148071.4660671.401424200000001.8818564 1.194696.8818564 2.4077473C17.2389269 24.2012564 17.2229657 25.603448 17.2229657 26.0296121 17.2229657 26.3775663 17.4575954 26.7821827 18.116793 26.6552912 23.2786458 24.9322794 27 20.0633148 27 14.3212723 27 7.14112562 21.1789496 1.32087331 13.9988029 1.32087331"/></svg>
-</a>
-</div>
-<div class=footer-mobile-links>
-<p><a href=https://github.com/kimcc/hugo-theme-noteworthy target=_blank rel=noopener>Noteworthy theme</a></p>
-<span class=divider-bar>|</span>
-<p><a href=https://gohugo.io target=_blank rel=noopener>Built with Hugo</a></p>
-</div>
-<script src=https://cartyc.github.io/js/main.min.c1aee25a817e9beb1f9c4afd9d62311227a7f5e46720e404dc1dda97281f47f2.js integrity="sha256-wa7iWoF+m+sfnEr9nWIxEien9eRnIOQE3B3alygfR/I=" crossorigin=anonymous></script>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://cartyc.github.io" >
+    &copy;  My New Hugo Site 2022 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+</div></div>
+  </div>
 </footer>
-</body>
+
+  </body>
 </html>
