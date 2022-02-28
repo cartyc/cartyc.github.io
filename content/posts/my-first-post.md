@@ -1,7 +1,7 @@
 ---
 title: "Fun with Config Controller and GitOps"
 date: 2022-02-27
-draft: true
+draft: false
 summary: For some fun I decided to put together a little example tutorial on some of the things I've been playing around with, namely Kubernetes Config Connector and Config Controller.
 ---
 
@@ -58,7 +58,19 @@ Once this is compelete you can get access to the newly created Config Controller
 gcloud iam service-accounts create connector
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member="serviceAccount:connector@${PROJECT_ID}.iam.gserviceaccount.com" \
-    --role="roles/owner"
+    --role="roles/container.clusterAdmin"
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+    --member="serviceAccount:connector@${PROJECT_ID}.iam.gserviceaccount.com" \
+    --role="roles/pubsub.admin"
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+    --member="serviceAccount:connector@${PROJECT_ID}.iam.gserviceaccount.com" \
+    --role="roles/source.admin"
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+    --member="serviceAccount:connector@${PROJECT_ID}.iam.gserviceaccount.com" \
+    --role="roles/iam.securityAdmin"
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+    --member="serviceAccount:connector@${PROJECT_ID}.iam.gserviceaccount.com" \
+    --role="roles/gkehub.admin"
 gcloud iam service-accounts add-iam-policy-binding \
 connector@${PROJECT_ID}.iam.gserviceaccount.com \
     --member="serviceAccount:${PROJECT_ID}.svc.id.goog[cnrm-system/cnrm-controller-manager]" \
