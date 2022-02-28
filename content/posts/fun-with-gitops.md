@@ -4,15 +4,23 @@ date: 2022-02-27
 draft: false
 summary: For some fun I decided to put together a little example tutorial on some of the things I've been playing around with, namely Kubernetes Config Connector and Config Controller.
 ---
+For some fun I decided to put together a little example tutorial on some of the things I've been playing around with, namely Kubernetes [Config Connector](https://cloud.google.com/config-connector/docs/overview) and [Config Controller](https://cloud.google.com/anthos-config-management/docs/concepts/config-controller-overview). Config Connector is a service that lets you define GCP resources as YAML so you can deploy GCP resources from a Kubernetes Cluster. 
 
+This can be installed in either GKE or other [Kubernetes Distributions](https://cloud.google.com/config-connector/docs/how-to/install-other-kubernetes). This lets you start managing Google Cloud services like you would other Kubernetes resources which is something I've really been enjoying. You can see the full list of supported resources [here](https://cloud.google.com/config-connector/docs/reference/overview)
 
-## Fun with Config Controller and GitOps
+Initially the probably I have had with this mean is the default requirement of needing a Kubernetes cluster to act as a management cluster, which you would need to manage and support. I've found this extends to other services the use the Kubernetes Resource Model to manage infrastucture. It's not the end of the world but it's something that can add some overhead and complexity.
 
-For some fun I decided to put together a little example tutorial on some of the things I've been playing around with, namely Kubernetes [Config Connector](https://cloud.google.com/config-connector/docs/overview) and [Config Controller](https://cloud.google.com/anthos-config-management/docs/concepts/config-controller-overview). Config Connector is a service that lets you define GCP resources as YAML so you can deploy GCP resources from a Kubernetes Cluster. This can be installed in either GKE or other [Kubernetes Distributions](https://cloud.google.com/config-connector/docs/how-to/install-other-kubernetes). This lets you start managing Google Cloud services like you would other Kubernetes resources which is something I've really been enjoying. You can see the full list of supported resources [here](https://cloud.google.com/config-connector/docs/reference/overview)
+This is why I'm rather excited about Config Controller which is a new service in Google Cloud which pre-loads a GKE cluster with Config Connector and is managed by Google instead of by me or you! To me this is a great way of solving that chicken and egg situation of needing a cluster to get started. 
 
-Initially the probably I have had with this mean is the default requirement of needing a Kubernetes cluster to act as a management cluster, which you would need to manage and support. I've found this extends to other services the use the Kubernetes Resource Model to manage infrastucture. It's not the end of the world but it's something that can add some overhead and complexity. This is why I'm rather excited about Config Controller which is a new service in Google Cloud which pre-loads a GKE cluster with Config Connector and is managed by Google instead of by me or you! To me this is a great way of solving that chicken and egg situation of needing a cluster to get started. 
+The main thing I wanted to test was to see if I could bootstrap a Kubernetes Cluster and wire it up with a GitOps agent to sync with a repository without having to use `kubectl` on it and deploy some applications. The apps I want to deploy for this demo are Falco and Falco Sidekick for a few reasons. 
 
-The main thing I wanted to test was to see if I could bootstrap a Kubernetes Cluster and wire it up with a GitOps agent to sync with a repository without having to use `kubectl` on it and deploy some applications. The apps I want to deploy for this demo are Falco and Falco Sidekick for a few reasons. First off Falco is a pretty fantastic tool in your Kubernetes Security toolkit (used by folks like Shopify and Gitlab) for doing runtime security and second is Falco Sidekick which is a companion tool for sending Falco alerts to other services in your ecosystem like Pub/Sub! The main reason I wanted to use Falco and Falco Sidekick in action is getting the PubSub integration using [WorkloadIdenity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) for authentication. The nice part to doing this is you won't need to generate a Service Account key and insert that into the Falco Sidekick pod rather but instead using GCP's IAM give the Falco Sidekick K8s SA access to GCP IAM roles.
+First off Falco is a pretty fantastic tool in your Kubernetes Security toolkit (used by folks like Shopify and Gitlab) for doing runtime security and second is Falco Sidekick which is a companion tool for sending Falco alerts to other services in your ecosystem like Pub/Sub! 
+
+The main reason I wanted to use Falco and Falco Sidekick in action is getting the PubSub integration using [WorkloadIdenity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) for authentication. The nice part to doing this is you won't need to generate a Service Account key and insert that into the Falco Sidekick pod rather but instead using GCP's IAM give the Falco Sidekick K8s SA access to GCP IAM roles.
+
+Here's a quick diagram of what we will be deploying from Config Controller.
+
+![Diagram](/img/diagram.png)
 
 In order to setup GitOps on the newly generated cluster we will be using the GKE Hub KCC resources ([GKEHubFeature](https://cloud.google.com/config-connector/docs/reference/resource-docs/gkehub/gkehubfeature), [GKEHubFeatureMembership](https://cloud.google.com/config-connector/docs/reference/resource-docs/gkehub/gkehubfeaturemembership), and [GKEHubMembership](https://cloud.google.com/config-connector/docs/reference/resource-docs/gkehub/gkehubmembership)) to configure Config Management. This will sync with the Source Repo that gets created from Config Controller and once you push the demo code to it. 
 
@@ -159,4 +167,4 @@ For more Config Connector fun you should check out fellow googler's Mathieu Beno
 
 ## Additional Resources
 - [The Rational Behind kpt](https://kpt.dev/guides/rationale)
-- [Blueprints](https://cloud.google.com/anthos-config-management/docs/tutorials/landing-zone)
+- [KCC Blueprints](https://cloud.google.com/anthos-config-management/docs/tutorials/landing-zone)
