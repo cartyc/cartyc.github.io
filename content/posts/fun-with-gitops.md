@@ -159,11 +159,12 @@ After a few minutes everything should light up and you'll have Falco up and runn
 
 Now that everything is up you should be able to see the topic in the PubSub section.
 
-![Falco PubSub](/img/falco-pubsub.png)
+<img src="/img/falco-pubsub.png" alt="Falco PubSub" width="100%"/>
 
 If you dig into the topic and look at the messages (you might have to click pull to do this) and you should some output similar to the following.
 
-![PubSub Messages](/img/falco-pubsub-messages.png)
+<img src="/img/falco-pubsub-messages.png" alt="PubSub Messages" width="100%"/>
+
 
 ## Wrap-Up
 
