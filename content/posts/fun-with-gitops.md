@@ -157,6 +157,14 @@ git push origin --all
 
 After a few minutes everything should light up and you'll have Falco up and running with Falco Sidekick sending events to Pub/Sub using WorkloadIdentity for authentication! 
 
+Now that everything is up you should be able to see the topic in the PubSub section.
+
+![Falco PubSub](/img/falco-pubsub.png)
+
+If you dig into the topic and look at the messages (you might have to click pull to do this) and you should some output similar to the following.
+
+![PubSub Messages](/img/falco-pubsub-messages.png)
+
 ## Wrap-Up
 
 The part about this process is that aside from the work we did in the config controller cluster we didn't have to touch Kubernetes directly and we used WorkloadIdentity to enable our services to access Source Repository and PubSub with needing to create keys or tokens and store them in Git or manually add them to the cluster. That is something I am very excited about! If you already have a repo in github or gitlab you can [mirror](https://cloud.google.com/source-repositories/docs/mirroring-repositories) them into Source Repository and use that as git delivery mechanism.
