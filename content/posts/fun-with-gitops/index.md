@@ -159,16 +159,15 @@ After a few minutes everything should light up and you'll have Falco up and runn
 
 Now that everything is up you should be able to see the topic in the PubSub section.
 
-![Falco PubSub](/img/falco-pubsub.png 'Falco PubSub')
+{{< resize-image src="falco-pubsub.png" alt="Falco PubSub" >}}
 
 If you dig into the topic and look at the messages (you might have to click pull to do this) and you should some output similar to the following.
 
-<!-- <img src="/img/falco-pubsub-messages.png" alt="PubSub Messages" width="100%;"/> -->
-{{< resize-image src="falco-pubsub-messages.png" alt="My first image" >}}
+{{< resize-image src="falco-pubsub-messages.png" alt="PubSub Messages" >}}
 
 ## Wrap-Up
 
-The part about this process is that aside from the work we did in the config controller cluster we didn't have to touch Kubernetes directly and we used WorkloadIdentity to enable our services to access Source Repository and PubSub with needing to create keys or tokens and store them in Git or manually add them to the cluster. That is something I am very excited about! If you already have a repo in github or gitlab you can [mirror](https://cloud.google.com/source-repositories/docs/mirroring-repositories) them into Source Repository and use that as git delivery mechanism.
+The part about this process I really enjoyed is that outside of the initial work we did in the config controller cluster we didn't have to touch Kubernetes directly(!) and we were able to use WorkloadIdentity to enable our services to access Source Repository and PubSub with needing to create keys or tokens and store them in Git or manually add them to the cluster. That is something I am very excited about! If you already have a repo in github or gitlab you can [mirror](https://cloud.google.com/source-repositories/docs/mirroring-repositories) them into Source Repository and use that as git delivery mechanism.
 
 I would really like to revist this and explore the use of [Cloud Deploy](https://cloud.google.com/deploy) to deliver the Infrastructure side of things and fully avoid any `kubectl` work and leave it up to automation. This can also be done using Config Connector as well which is pretty snazzy especially when you start paring Policy Controller to enforce policy on your infrastructure!
 
