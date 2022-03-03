@@ -16,7 +16,7 @@ The main thing I wanted to test was to see if I could bootstrap a Kubernetes Clu
 
 First off Falco is a pretty fantastic tool in your Kubernetes Security toolkit (used by folks like Shopify and Gitlab) for doing runtime security and second is Falco Sidekick which is a companion tool for sending Falco alerts to other services in your ecosystem like Pub/Sub! 
 
-The main reason I wanted to use Falco and Falco Sidekick in action is getting the PubSub integration using [WorkloadIdenity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) for authentication. The nice part to doing this is you won't need to generate a Service Account key and insert that into the Falco Sidekick pod rather but instead using GCP's IAM give the Falco Sidekick K8s SA access to GCP IAM roles.
+The main reason I wanted to use Falco and Falco Sidekick in action is getting the PubSub integration using [WorkloadIdentity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) for authentication. The nice part to doing this is you won't need to generate a Service Account key and insert that into the Falco Sidekick pod rather but instead using GCP's IAM give the Falco Sidekick K8s SA access to GCP IAM roles.
 
 Here's a quick diagram of what we will be deploying from Config Controller.
 
@@ -159,12 +159,12 @@ After a few minutes everything should light up and you'll have Falco up and runn
 
 Now that everything is up you should be able to see the topic in the PubSub section.
 
-<img src="/img/falco-pubsub.png" alt="Falco PubSub" width="100%"/>
+![Falco PubSub](/img/falco-pubsub.png 'Falco PubSub')
 
 If you dig into the topic and look at the messages (you might have to click pull to do this) and you should some output similar to the following.
 
-<img src="/img/falco-pubsub-messages.png" alt="PubSub Messages" width="100%"/>
-
+<!-- <img src="/img/falco-pubsub-messages.png" alt="PubSub Messages" width="100%;"/> -->
+{{< resize-image src="falco-pubsub-messages.png" alt="My first image" >}}
 
 ## Wrap-Up
 
