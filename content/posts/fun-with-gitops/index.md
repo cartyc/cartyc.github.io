@@ -20,7 +20,7 @@ The main reason I wanted to use Falco and Falco Sidekick in action is getting th
 
 Here's a quick diagram of what we will be deploying from Config Controller.
 
-![Diagram](/img/diagram.png)
+{{< resize-image src="diagram.png" alt="Infrastructure Diagram" >}}
 
 In order to setup GitOps on the newly generated cluster we will be using the GKE Hub KCC resources ([GKEHubFeature](https://cloud.google.com/config-connector/docs/reference/resource-docs/gkehub/gkehubfeature), [GKEHubFeatureMembership](https://cloud.google.com/config-connector/docs/reference/resource-docs/gkehub/gkehubfeaturemembership), and [GKEHubMembership](https://cloud.google.com/config-connector/docs/reference/resource-docs/gkehub/gkehubmembership)) to configure Config Management. This will sync with the Source Repo that gets created from Config Controller and once you push the demo code to it. 
 
@@ -33,7 +33,7 @@ So if everything goes according to plan you will create a Config Controller inst
 
 ### Config Controller
 
-Without further ado let's create a Config Controller instance in your GCP project to get started. This should take about 20 minutes or so. This is currently only available in us-central1 and us-east1 regions. I'll be using east1 because that's closest to where I am. Full instructions can be found [here](https://cloud.google.com/anthos-config-management/docs/how-to/config-controller-setup)
+Without further ado let's create a Config Controller instance in your GCP project to get started. This should take about 20 minutes or so. This is currently only available in `us-central1` and `us-east1` regions. I'll be using `us-east1` because that's closest to where I am. Full instructions can be found [here](https://cloud.google.com/anthos-config-management/docs/how-to/config-controller-setup)
 
 Setup your environment
 ```
