@@ -139,7 +139,7 @@ kubectl apply -f infrastructure
 Wait we're getting some errors!
 
 ```
-omputenetwork.compute.cnrm.cloud.google.com/demo-net created
+computenetwork.compute.cnrm.cloud.google.com/demo-net created
 Error from server (Forbidden): error when creating "infrastructure/gke.yaml": admission webhook "validation.gatekeeper.sh" denied the request: [limitegresstraffic] GKE is not Private data-location-demo
 [datalocation] Guardrail # 5: Resource ContainerCluster ('data-location-demo') is located in 'us-east1' when it is required to be in '["northamerica-northeast1", "northamerica-northeast2", "global"]'
 Error from server (Forbidden): error when creating "infrastructure/gke.yaml": admission webhook "validation.gatekeeper.sh" denied the request: [datalocation] Guardrail # 5: Resource ComputeSubnetwork ('demo-subnet') is located in 'us-east1' when it is required to be in '["northamerica-northeast1", "northamerica-northeast2", "global"]'
@@ -173,17 +173,21 @@ and
 Resource ComputeSubnetwork ('demo-subnet') is located in 'us-east1' 
 ```
 
+This is expected based on the policy we looked at earlier and both of these resources are being deployed in a non-approved region. We'll fix this in a couple sections.
+
 ## Testing Locally with Kpt
 
-You'll notice with this method we need to wait for the Config Controller instance to tell us that something is wrong, this is great but we can do better!
+You'll notice with this method we need to wait for the Config Controller instance to tell us that something is wrong, this is great but I think we can do better!
 
-Using the `kpt` packaging tool we can run the policies against our code locally. To test this run `kpt fn render` and you should get output similar
+Using the `kpt` packaging tool we can run the policies against our code locally using the [Gatekeeper](https://catalog.kpt.dev/gatekeeper/v0.2/) function. I've preconfigured this to run in the `Kptfile` in the root of the directory. To test this run `kpt fn render` and you should get output similar to this:
 
 ```
 [error] container.cnrm.cloud.google.com/v1beta1/ContainerCluster/config-control/data-location-demo: GKE is not Private data-location-demo violatedConstraint: limitegresstraffic
 [error] container.cnrm.cloud.google.com/v1beta1/ContainerCluster/config-control/data-location-demo: Guardrail # 5: Resource ContainerCluster ('data-location-demo') is located in 'us-east1' when it is required to be in '["northamerica-northeast1", "northamerica-northeast2", "global"]' violatedConstraint: datalocation
 [error] compute.cnrm.cloud.google.com/v1beta1/ComputeSubnetwork/config-control/demo-subnet: Guardrail # 5: Resource ComputeSubnetwork ('demo-subnet') is located in 'us-east1' when it is required to be in '["northamerica-northeast1", "northamerica-northeast2", "global"]' violatedConstraint: datalocation
 ```
+
+Great! These are the same errors as we got from Config Controller so i think we can be pretty confident that we can go ahead and start fixing the errors and testing locally now. This is really nice because we now don't need to have a running config controller instance to validate our configs and can either do this testing locally or within a CI/CD pipeline without needing to add extra infrastructure.
 
 ## Fixing the Issues
 
