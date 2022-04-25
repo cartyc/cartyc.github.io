@@ -7,17 +7,17 @@ summary: Using Gatekeeper to enforce policy on infrastructure in Config Controll
 
 ## Policy Enforcement with Gatekeeper and KCC
 
-In my [last post](/posts/fun-with-gitops/) we deployed a GKE Cluster using Config Controller and Kubernetes Config Connector Resources. For this Post I wanted to look at enforcing policy in Config Controller so we can prevent non-compliant resources from being deployed. So what we'll be doing is taking a look at some of the policies outline in the [Canadian Governments Cloud Guardrails Framework](https://github.com/canada-ca/cloud-guardrails) in particular Guardrails [5](https://github.com/canada-ca/cloud-guardrails/blob/master/EN/05_Data-Location.md).
+In my [last post](/posts/fun-with-gitops/) we deployed a GKE Cluster using Config Controller and Kubernetes Config Connector Resources. For this Post I wanted to look at enforcing policy in Config Controller so we can prevent non-compliant resources from being deployed. What we'll be doing is taking a look at how to prevent resources from being deployed in unapproved regions.
 
-[Guardrail # 5]((https://github.com/canada-ca/cloud-guardrails/blob/master/EN/05_Data-Location.md)) has the objective of "Establish policies to restrict GC sensitive workloads to approved geographic locations." which in our case we'll be looking to ensure we can only deploy our resources to a Canadian Region (`northamerica-northeast1`, `northamerica-northeast2`). This policy can be enforced in a few was for starters the [Organization Policy Resource Location Restriction](https://cloud.google.com/resource-manager/docs/organization-policy/defining-locations) can be used for this. 
+For many of my clients this would align with [Guardrail # 5]((https://github.com/canada-ca/cloud-guardrails/blob/master/EN/05_Data-Location.md)) of the GC's Cloud Guardrails [Framework](https://github.com/canada-ca/cloud-guardrails) which has the objective of "Establish policies to restrict GC sensitive workloads to approved geographic locations.". What this means in our case is we'll be looking to ensure we can only deploy our resources to a Canadian Region (`northamerica-northeast1`, `northamerica-northeast2`). This policy can also be enforced via an Organization with [Organization Policy Resource Location Restriction](https://cloud.google.com/resource-manager/docs/organization-policy/defining-locations). 
 
-So why if I have this policy would I want to enforce is elsewhere? For starters this policy prevents deployment at deploy time, so when you run a `gcloud container clusters create` command, for example, this start creating the service and after a while you should get an error which is great, it worked! 
+So why if I have this organization policy would I want to enforce is elsewhere? In my opinion this policy is great but only enforces at deploy time, so when you run a `gcloud container clusters create` command, for example, this will start the creation of the desired service and after a while you should get an error which is great, it worked! 
 
-The short coming here in my opinion is I have to spend that time waiting to get a response and I assume my configuration is correct and not problematic. This would be true to when deploying misconfigured resources via terraform or in our case KCC, the services would start spinning up and eventually give an error which wastes time and can cause frustration.
+We can enchance this and save you that time spend waiting for the system to let you know things are misconfigured by moving some validation to the front end of the process ([shift left](https://en.wikipedia.org/wiki/Shift-left_testing)).
 
-What we want to do is to start moving those indicators to the frontend of the process (not replacing the org policies those are still vital) so we can get those alerts sooner in the process so we react sooner and don't waste time with bad configurations.
+By doing this (and not replacing the org policies which are still vital) we can get those alerts sooner in the process so we react faster and not waste time waiting for bad configurations to be deployed. 
 
-This is where [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller) enters the picture. Policy Controller is a Policy enforcement engine based on [OPA Gatekeeper](https://open-policy-agent.github.io/gatekeeper/website/docs/) which we can use to write and enforce policy within Config Controller. In short when the request gets made Policy Controller will inspect your configuration and give you a response before an attempt to create the resource is made.
+We can use [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller) to help us achieve this early testing and continual testing in Config Controller. Policy Controller is a Policy enforcement engine based on [OPA Gatekeeper](https://open-policy-agent.github.io/gatekeeper/website/docs/) which we can use to write and enforce policy. Without getting too technical how this works is when the request gets made Policy Controller will inspect your configuration and give you a response before an attempt to create the resource is made. If you want to learn more checkout out this documention on [admission controllers](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/).
 
 Let's look at how we can do this with our GKE configuration from last time, I won't put the whole config here but just the relevent snippet. The relevent field we're going to be concerned with here is the `location` key.
 
@@ -208,3 +208,12 @@ Successfully executed 2 function(s) in 1 package(s).
 ```
 
  If you don't get any errors you can go ahead and apply the configs and you should get a shiny new Private GKE cluster in a matter of minutes!
+
+## What's Next?
+
+What I've gone through in this post is a pretty limited case but this could be extended to things like ensuring that specific labels or annotations are included with resources for example departments, cost centers, emergency contacts, etc or specific naming conventions on resources, even ITSG related policies.
+
+These are some awesome resources for additional reading
+- https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller
+- https://www.openpolicyagent.org/docs/latest/
+- https://cloud.google.com/anthos-config-management/docs/how-to/using-cis-k8s-benchmark
