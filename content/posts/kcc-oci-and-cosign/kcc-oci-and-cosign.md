@@ -1,10 +1,10 @@
 ---
-title: "Kcc Oci and Cosign"
+title: "KCC Oci and Cosign"
 date: 2022-11-16T20:45:56-05:00
 draft: false
 ---
 
-# Signing OCI KCC Artifacts Using `cosign`
+# Signing OCI KCC Artifacts Using Cosign
 
 I've been meaning to try out [cosign](https://github.com/sigstore/cosign) to sign OCI artifacts for a while now and recently had a chance to give it a whirl and well it's pretty awesome.
 
