@@ -1,7 +1,7 @@
 ---
 title: "Kcc Oci and Cosign"
 date: 2022-11-16T20:45:56-05:00
-draft: true
+draft: false
 ---
 
 # Signing OCI KCC Artifacts Using `cosign`
