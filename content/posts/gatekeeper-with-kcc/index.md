@@ -9,7 +9,7 @@ summary: Using Gatekeeper to enforce policy on infrastructure in Config Controll
 
 In my [last post](/posts/fun-with-gitops/) we deployed a GKE Cluster using Config Controller and Kubernetes Config Connector Resources. For this Post I wanted to look at enforcing policy in Config Controller so we can prevent non-compliant resources from being deployed. What we'll be doing is taking a look at how to prevent resources from being deployed in unapproved regions.
 
-For many of my clients this would align with [Guardrail # 5]((https://github.com/canada-ca/cloud-guardrails/blob/master/EN/05_Data-Location.md)) of the GC's Cloud Guardrails [Framework](https://github.com/canada-ca/cloud-guardrails) which has the objective of "Establish policies to restrict GC sensitive workloads to approved geographic locations.". What this means in our case is we'll be looking to ensure we can only deploy our resources to a Canadian Region (`northamerica-northeast1`, `northamerica-northeast2`). This policy can also be enforced via an Organization with [Organization Policy Resource Location Restriction](https://cloud.google.com/resource-manager/docs/organization-policy/defining-locations). 
+This would align with [Guardrail # 5]((https://github.com/canada-ca/cloud-guardrails/blob/master/EN/05_Data-Location.md)) of the GC's Cloud Guardrails [Framework](https://github.com/canada-ca/cloud-guardrails) which has the objective of "Establish policies to restrict GC sensitive workloads to approved geographic locations.". What this means in our case is we'll be looking to ensure we can only deploy our resources to a Canadian Region (`northamerica-northeast1`, `northamerica-northeast2`). This policy can also be enforced via an Organization with [Organization Policy Resource Location Restriction](https://cloud.google.com/resource-manager/docs/organization-policy/defining-locations). 
 
 So why if I have this organization policy would I want to enforce is elsewhere? In my opinion this policy is great but only enforces at deploy time, so when you run a `gcloud container clusters create` command, for example, this will start the creation of the desired service and after a while you should get an error which is great, it worked! 
 
@@ -17,7 +17,7 @@ We can enchance this and save you that time spend waiting for the system to let 
 
 By doing this (and not replacing the org policies which are still vital) we can get those alerts sooner in the process so we react faster and not waste time waiting for bad configurations to be deployed. 
 
-We can use [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller) to help us achieve this early testing and continual testing in Config Controller. Policy Controller is a Policy enforcement engine based on [OPA Gatekeeper](https://open-policy-agent.github.io/gatekeeper/website/docs/) which we can use to write and enforce policy. Without getting too technical how this works is when the request gets made Policy Controller will inspect your configuration and give you a response before an attempt to create the resource is made. If you want to learn more checkout out this documention on [admission controllers](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/).
+We can use [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller) to help us achieve this early testing and continual testing in Config Controller. Policy Controller is a policy enforcement engine based on [OPA Gatekeeper](https://open-policy-agent.github.io/gatekeeper/website/docs/) which we can use to write and enforce policy. Without getting too technical how this works is when the request gets made Policy Controller will inspect your configuration and give you a response before an attempt to create the resource is made. If you want to learn more checkout out this documention on [admission controllers](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/).
 
 Let's look at how we can do this with our GKE configuration from last time, I won't put the whole config here but just the relevent snippet. The relevent field we're going to be concerned with here is the `location` key.
 
@@ -198,7 +198,7 @@ To fix the private cluster error uncomment the privatecluster section.
 First run the tests locally with `kpt` to make sure things are fixed. A passing result will look like.
 
 ```
-ackage "policy-blog-resources": 
+package "policy-blog-resources": 
 [RUNNING] "gcr.io/kpt-fn/kubeval:v0.2"
 [PASS] "gcr.io/kpt-fn/kubeval:v0.2" in 5s
 [RUNNING] "gcr.io/kpt-fn/gatekeeper:v0.2.1"
