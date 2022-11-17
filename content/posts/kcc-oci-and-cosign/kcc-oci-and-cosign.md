@@ -1,5 +1,5 @@
 ---
-title: "KCC Oci and Cosign"
+title: "KCC, OCI and Cosign"
 date: 2022-11-16T20:45:56-05:00
 draft: false
 ---
@@ -183,13 +183,15 @@ Now that we've signed the artifact, how do we verify it? Luckily it's pretty sim
 cosign verify --key gcpkms://projects/${PROJECT_ID}/locations/${REGION}/keyRings/${KEYRING}/cryptoKeys/${KEYNAME} ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REGISTRY_NAME}/${CONTAINER_NAME}@${SHA}
 ```
 
-Voilia you've now signed your KCC infra with cosign!
+Voila, you've now signed your KCC infra with cosign!
+
+Next time I'll try to look at doing enforcement with `gatekeeper` using it's new external data feature to validate `cosign` [signatures](https://github.com/sigstore/cosign-gatekeeper-provider).
 
 ## Set Up Cosign and Cloud Build
 
 For additional fun and profit I set up a test cloud build pipeline that runs through this.
 
-  Cloud Build Permissions
+You'll need to add a few permissions to the Cloud Build service account.
 Key verifier/signer
 key viewer
 
