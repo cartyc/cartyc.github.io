@@ -1,7 +1,7 @@
 ---
 title: "Policy Enforcement with Gatekeeper and KCC"
 date: 2022-04-27
-draft: true
+draft: false
 summary: Using Gatekeeper to enforce policy on infrastructure in Config Controller with Config Connector resources.
 ---
 
